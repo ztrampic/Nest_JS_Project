@@ -4,7 +4,7 @@ import {
     PrimaryGeneratedColumn,
     ManyToMany,
     JoinTable,
-    BaseEntity, BeforeInsert
+    BaseEntity, BeforeInsert, BeforeUpdate
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import {Role} from "../../role/entities/role.entity";
@@ -23,20 +23,21 @@ export class User extends BaseEntity {
     @Column({type: 'varchar', nullable: false, unique: false})
     password: string;
 
-    @Column({type: 'varchar', nullable: false, unique: true})
+    @Column({type: 'varchar', nullable: false})
     username: string;
 
-    @Column({type: 'varchar', nullable: false})
+    @Column({type: 'varchar', nullable: false, unique: true})
     email: string;
 
     @Column({default: true})
     isActive: boolean;
 
-    @ManyToMany(() => Role, {eager: false, cascade: true})
+    @ManyToMany(() => Role, {eager: false})
     @JoinTable()
     roles: Role[];
 
     @BeforeInsert()
+    @BeforeUpdate()
     async hashPassword() {
         this.password = await bcrypt.hash(this.password, 10);
     }

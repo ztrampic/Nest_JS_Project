@@ -1,12 +1,17 @@
 import {CreateRoleDto} from "../../role/dto/create-role.dto";
-import {IsEmail, IsNotEmpty} from "class-validator";
+import {IsEmail, IsNotEmpty, IsOptional, IsString, Length} from "class-validator";
 
 export class CreateUserDto {
     @IsNotEmpty()
+    @Length(10, 20)
     username: string;
 
+    @IsOptional()
+    @Length(1, 10)
     name: string;
 
+    @IsOptional()
+    @Length(1, 15)
     lastname: string;
 
     @IsNotEmpty()
@@ -15,6 +20,4 @@ export class CreateUserDto {
     @IsNotEmpty()
     @IsEmail()
     email: string;
-
-    roles: CreateRoleDto[];
 }
