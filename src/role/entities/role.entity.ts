@@ -1,15 +1,15 @@
-import {BaseEntity, Column, Entity, ManyToMany, PrimaryGeneratedColumn} from "typeorm";
-import {User} from "../../user/entities/user.entity";
+import {Column, Entity, PrimaryGeneratedColumn} from "typeorm";
+
+import {Exclude} from "class-transformer";
 
 @Entity()
-export class Role{
+export class Role {
     @PrimaryGeneratedColumn()
+    @Exclude({toPlainOnly: true})
     id: number;
+
     @Column()
-    roleName: ROLE_NAME;
+    roleName: string;
 }
 
-export enum ROLE_NAME {
-    USER_LVL_1,
-    USER_LVL_2
-}
+

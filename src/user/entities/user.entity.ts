@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import {Role} from "../../role/entities/role.entity";
+import {Exclude} from "class-transformer";
 
 @Entity()
 export class User extends BaseEntity {
@@ -21,6 +22,7 @@ export class User extends BaseEntity {
     lastname: number;
 
     @Column({type: 'varchar', nullable: false, unique: false})
+    @Exclude({ toPlainOnly: true })
     password: string;
 
     @Column({type: 'varchar', nullable: false})
@@ -32,7 +34,7 @@ export class User extends BaseEntity {
     @Column({default: true})
     isActive: boolean;
 
-    @ManyToMany(() => Role, {eager: false})
+    @ManyToMany(() => Role, {eager: true, cascade: true})
     @JoinTable()
     roles: Role[];
 

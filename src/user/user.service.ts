@@ -1,4 +1,4 @@
-import {BadRequestException, Injectable} from '@nestjs/common';
+import {BadRequestException, HttpStatus, Injectable, NotFoundException} from '@nestjs/common';
 import {Repository} from 'typeorm';
 import {InjectRepository} from '@nestjs/typeorm';
 import {User} from "./entities/user.entity";
@@ -20,25 +20,32 @@ export class UserService {
         if(userExist){
             throw new BadRequestException(EXCEPTION_MESSAGE.USER_EXIST);
         }
-        return this.userRepository.insert(plainToClass(User, createUserDto));
+        return await this.userRepository.save(plainToClass(User, createUserDto));
+
     }
 
     findAll() {
         return classToPlain(this.userRepository.find());
     }
 
-    findOne(id: number) {
-        return this.userRepository.findByIds([id]);
-    }
-
     update(id: number, updateUserDto: UpdateUserDto) {
         return `This action updates a #${id}`;
     }
 
-    remove(id: number) {
-        this.userRepository.delete(id).then(r => {
-            console.log("R", r);
-            console.log("DELETED USER WITH ID".concat(id.toString()));
-        });
+    async remove(id: number) {
+        const found = await this.userRepository.findOne({id: id});
+        if (!found) {
+            throw new NotFoundException(EXCEPTION_MESSAGE.USER_NOT_FOUND.concat(String(id)));
+        }
+        return this.userRepository.delete(id);
+
+    }
+
+    async findById(id: number) {
+        const found = await this.userRepository.findOne({ id: id });
+        if(!found){
+            throw new NotFoundException(EXCEPTION_MESSAGE.USER_NOT_FOUND.concat(String(id)));
+        }
+        return classToPlain(found);
     }
 }

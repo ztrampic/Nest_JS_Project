@@ -1,8 +1,7 @@
-export class CreateRoleDto {
-    roleName: ROLE_NAME;
-}
+import {IsString} from "class-validator";
 
-enum ROLE_NAME {
-    USER_LVL_1 ,
-    USER_LVL_2
+export class CreateRoleDto {
+    @IsString()
+    roleName: string;
+
 }
