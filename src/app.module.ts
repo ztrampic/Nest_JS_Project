@@ -3,8 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import {TypeOrmModule} from "@nestjs/typeorm";
 import {DB_CONFIG} from "../db_config";
-import {UserModule} from "./user/user.module";
-import { RoleModule } from './role/role.module';
+import { CoreModule } from './core/core.module';
 import 'reflect-metadata';
 
 @Module({
@@ -12,8 +11,7 @@ import 'reflect-metadata';
       TypeOrmModule.forRoot(
         DB_CONFIG
       ),
-      UserModule,
-      RoleModule,
+      CoreModule,
   ],
   controllers: [AppController],
   providers: [AppService],

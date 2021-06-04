@@ -5,7 +5,7 @@ import {User} from "./entities/user.entity";
 import {CreateUserDto} from "./dto/create-user.dto";
 import {classToPlain, plainToClass} from "class-transformer";
 import {UpdateUserDto} from "./dto/update-user.dto";
-import {EXCEPTION_MESSAGE, ROLES} from "../../constants";
+import {EXCEPTION_MESSAGE, ROLES} from "../../../constants";
 import {Role} from "../role/entities/role.entity";
 import {CreateRoleDto} from "../role/dto/create-role.dto";
 
@@ -29,7 +29,7 @@ export class UserService {
         if(!createUserDto.roles || createUserDto.roles.length === 0){
             createUserDto.roles = await this.setDefaultRole();
         }
-        return await this.userRepository.save(plainToClass(User, createUserDto));
+        return classToPlain(this.userRepository.save(plainToClass(User, createUserDto)));
 
     }
 
@@ -37,8 +37,23 @@ export class UserService {
         return classToPlain(this.userRepository.find());
     }
 
-    update(id: number, updateUserDto: UpdateUserDto) {
-        return `This action updates a #${id}`;
+    findAllActive() {
+        return classToPlain(this.userRepository.find({isActive: true}))
+    }
+
+    findAllBanned() {
+        return classToPlain(this.userRepository.find({isActive: false}))
+    }
+
+    async update(id: number, updateUserDto: UpdateUserDto) {
+        const found = await this.userRepository.findOne({id: id});
+        if (!found) {
+            throw new NotFoundException(EXCEPTION_MESSAGE.USER_NOT_FOUND.concat(String(id)));
+        }
+        for (let prop in found) {
+            found[prop] = updateUserDto[prop] ? updateUserDto[prop] : found[prop];
+        }
+        return classToPlain(this.userRepository.save(plainToClass(User, found)));
     }
 
     async remove(id: number) {
@@ -58,6 +73,23 @@ export class UserService {
         return classToPlain(found);
     }
 
+    async banUser(id: number) {
+        const found = await this.userRepository.findOne({id: id});
+        if (!found) {
+            throw new NotFoundException(EXCEPTION_MESSAGE.USER_NOT_FOUND.concat(String(id)));
+        }
+        found.isActive = false;
+        return classToPlain(this.userRepository.save(found));
+    }
+
+    async unBan(id: number) {
+        const found = await this.userRepository.findOne({id: id});
+        if (!found) {
+            throw new NotFoundException(EXCEPTION_MESSAGE.USER_NOT_FOUND.concat(String(id)));
+        }
+        found.isActive = true;
+        return classToPlain(this.userRepository.save(found));
+    }
 
     private async doCheckRoles(roles: CreateRoleDto[]) {
         roles = plainToClass(Role,roles);
@@ -85,4 +117,5 @@ export class UserService {
         }
         return array;
     }
+
 }

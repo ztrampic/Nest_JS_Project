@@ -1,6 +1,6 @@
 
-import { User } from "./src/user/entities/user.entity";
-import { Role } from "./src/role/entities/role.entity";
+import { User } from "./src/core/user/entities/user.entity";
+import { Role } from "./src/core/role/entities/role.entity";
 const ENTITIES : any[] = [
     User,Role
 ]

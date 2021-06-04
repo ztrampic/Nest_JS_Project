@@ -9,7 +9,7 @@ export class UpdateUserDto {
     username: string;
 
     @IsOptional()
-    @Length(1, 10)
+    @Length(1, 15)
     name: string;
 
     @IsOptional()
@@ -17,9 +17,7 @@ export class UpdateUserDto {
     lastname: string;
 
     @IsNotEmpty()
-    password: string;
-
-    @IsNotEmpty()
     @IsEmail()
     email: string;
+
 }
