@@ -8,7 +8,7 @@ export class Role {
     @Exclude({toPlainOnly: true})
     id: number;
 
-    @Column()
+    @Column({name:'role_name'})
     roleName: string;
 }
 

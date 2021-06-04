@@ -31,11 +31,15 @@ export class User extends BaseEntity {
     @Column({type: 'varchar', nullable: false, unique: true})
     email: string;
 
-    @Column({default: true})
+    @Column({default: true, name:'is_active'})
     isActive: boolean;
 
-    @ManyToMany(() => Role, {eager: true, cascade: true})
-    @JoinTable()
+    @ManyToMany(() => Role, {eager: true})
+    @JoinTable({
+        name: 'user_role',
+        joinColumn: { name: 'user_id', referencedColumnName: 'id'},
+        inverseJoinColumn: { name: 'role_id', referencedColumnName: 'id'},
+    })
     roles: Role[];
 
     @BeforeInsert()

@@ -8,7 +8,7 @@ export class CreateUserDto {
     username: string;
 
     @IsOptional()
-    @Length(1, 10)
+    @Length(1, 15)
     name: string;
 
     @IsOptional()
