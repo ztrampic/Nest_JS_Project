@@ -6,11 +6,11 @@ export interface RegistrationStatus {
 }
 
 export interface JwtPayload {
-    username: string;
+    email: string;
 }
 
 export interface LoginStatus {
-    username: string;
+    email: string;
     accessToken: any;
     expiresIn: any;
 }

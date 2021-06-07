@@ -5,6 +5,10 @@ export const EXCEPTION_MESSAGE : any = {
     INVALID_TOKEN:'Invalid token.',
 }
 
+export const SUCCESS_MESSAGE : any = {
+    USER_REGISTER: "User registered successfully",
+}
+
 export const ROLES : any = {
     admin : "ADMIN",
     user : "USER"

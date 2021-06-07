@@ -24,8 +24,8 @@ export default class TypeOrmConfig{
     }
 }
 
-export const asyncTypeOrmConfig : TypeOrmModuleAsyncOptions = {
+export const asyncTypeOrmConfig = {
     imports:[ConfigModule],
-    useFactory : async (configService: ConfigService): Promise<TypeOrmModuleAsyncOptions> => TypeOrmConfig.getOrmConfig(configService),
+    useFactory : async (configService: ConfigService) => TypeOrmConfig.getOrmConfig(configService),
     inject:[ConfigService]
 }

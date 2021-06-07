@@ -10,12 +10,12 @@ export class AuthController {
 
 
     @Post('login')
-    public async login(@Body() loginUserDto: LoginUserDto): Promise<LoginStatus> {
+    public async login(@Body() loginUserDto: LoginUserDto){
         return await this.authService.login(loginUserDto);
     }
 
     @Post('register')
-    public async register(@Body() createUserDto: CreateUserDto): Promise<RegistrationStatus> {
+    public async register(@Body() createUserDto: CreateUserDto){
         const result: RegistrationStatus = await this.authService.register(createUserDto);
         if (!result.success) {
             throw new HttpException(result.message, HttpStatus.BAD_REQUEST);
