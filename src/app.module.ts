@@ -2,14 +2,16 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import {TypeOrmModule} from "@nestjs/typeorm";
-import {DB_CONFIG} from "../db_config";
+import {asyncTypeOrmConfig} from "../db_config";
 import { CoreModule } from './core/core.module';
 import 'reflect-metadata';
+import {ConfigModule} from "@nestjs/config";
 
 @Module({
   imports: [
-      TypeOrmModule.forRoot(
-        DB_CONFIG
+      ConfigModule.forRoot(),
+      TypeOrmModule.forRootAsync(
+        asyncTypeOrmConfig
       ),
       CoreModule,
   ],

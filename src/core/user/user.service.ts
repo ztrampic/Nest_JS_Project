@@ -118,4 +118,7 @@ export class UserService {
         return array;
     }
 
+    async findByUsername(username: string) {
+
+    }
 }
