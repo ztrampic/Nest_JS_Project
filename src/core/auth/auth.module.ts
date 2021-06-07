@@ -1,13 +1,17 @@
 import {Module} from '@nestjs/common';
 import {AuthService} from './auth.service';
-import {UserModule} from "../user/user.module";
 import {JwtModule} from "@nestjs/jwt";
+import {PassportModule} from "@nestjs/passport";
+import {JwtStrategy} from "./jwt.strategy";
+import {AuthController} from "./auth.controller";
+import {UserModule} from "../user/user.module";
 
 const modules: any = [
     UserModule,
+    PassportModule,
     JwtModule.register({
-        secret: "None",
-        signOptions: {expiresIn: '60s'},
+        secret: `${process.env.SECRETKEY}`,
+        // signOptions: { expiresIn: `${process.env.EXPIRESIN}`},
     }),
 ]
 
@@ -15,7 +19,9 @@ const modules: any = [
     imports: [
         ...modules,
     ],
-    providers: [AuthService]
+    controllers: [AuthController],
+    providers: [AuthService, JwtStrategy],
+    exports: [AuthService],
 })
 export class AuthModule {
 }

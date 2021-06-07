@@ -16,6 +16,6 @@ const modules : any = [
     ],
     providers: [UserService],
     controllers: [UserController],
-    exports: [UserService],
+    exports: [UserService, TypeOrmModule],
 })
 export class UserModule {}

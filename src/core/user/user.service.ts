@@ -1,4 +1,4 @@
-import {BadRequestException, Injectable, NotFoundException} from '@nestjs/common';
+import {BadRequestException, HttpException, HttpStatus, Injectable, NotFoundException} from '@nestjs/common';
 import {Repository} from 'typeorm';
 import {InjectRepository} from '@nestjs/typeorm';
 import {User} from "./entities/user.entity";
@@ -8,6 +8,8 @@ import {UpdateUserDto} from "./dto/update-user.dto";
 import {EXCEPTION_MESSAGE, ROLES} from "../../../constants";
 import {Role} from "../role/entities/role.entity";
 import {CreateRoleDto} from "../role/dto/create-role.dto";
+import {LoginUserDto} from "./dto/login-user.dto";
+import {comparePasswords} from "../auth/helpers/interface";
 
 
 @Injectable()
@@ -21,7 +23,7 @@ export class UserService {
     async create(createUserDto: CreateUserDto) {
         const userExist = await this.userRepository.findOne({email: createUserDto.email});
         if (userExist) {
-            throw new BadRequestException(EXCEPTION_MESSAGE.USER_EXIST);
+            throw new HttpException(EXCEPTION_MESSAGE.USER_EXIST, HttpStatus.BAD_REQUEST);
         }
         if (createUserDto.roles && createUserDto.roles.length > 0) {
             createUserDto.roles = await this.doCheckRoles(createUserDto.roles);
@@ -63,6 +65,18 @@ export class UserService {
         }
         return this.userRepository.delete(id);
 
+    }
+
+    async loginUser({ email, password }: LoginUserDto){
+        const user = await this.userRepository.findOne({ email:  email });
+        if (!user) {
+            throw new HttpException(EXCEPTION_MESSAGE.USER_NOT_FOUND.concat(String(email)), HttpStatus.NOT_FOUND);
+        }
+        const areEqual = await comparePasswords(user.password, password);
+        if (!areEqual) {
+            throw new HttpException(EXCEPTION_MESSAGE.WRONG_PASSWORD.concat(String(email)), HttpStatus.UNAUTHORIZED);
+        }
+        return user;
     }
 
     async findById(id: number) {
@@ -118,7 +132,8 @@ export class UserService {
         return array;
     }
 
-    async findByUsername(username: string) {
-
+    async findByPayload({ email }: any): Promise<User> {
+        return await this.userRepository.findOne({email: email});
     }
+
 }
