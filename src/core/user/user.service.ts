@@ -28,7 +28,7 @@ export class UserService {
         if (createUserDto.roles && createUserDto.roles.length > 0) {
             createUserDto.roles = await this.doCheckRoles(createUserDto.roles);
         }
-        if(!createUserDto.roles || createUserDto.roles.length === 0){
+        if (!createUserDto.roles || createUserDto.roles.length === 0) {
             createUserDto.roles = await this.setDefaultRole();
         }
         return classToPlain(this.userRepository.save(plainToClass(User, createUserDto)));
@@ -67,8 +67,8 @@ export class UserService {
 
     }
 
-    async loginUser({ email, password }: LoginUserDto){
-        const user = await this.userRepository.findOne({ email:  email });
+    async loginUser({email, password}: LoginUserDto) {
+        const user = await this.userRepository.findOne({email: email});
         if (!user) {
             throw new HttpException(EXCEPTION_MESSAGE.USER_NOT_FOUND.concat(String(email)), HttpStatus.NOT_FOUND);
         }
@@ -106,7 +106,7 @@ export class UserService {
     }
 
     private async doCheckRoles(roles: CreateRoleDto[]) {
-        roles = plainToClass(Role,roles);
+        roles = plainToClass(Role, roles);
         let array = [];
         for (let role of roles) {
             const found = await this.roleRepository.findOne({roleName: role.roleName});

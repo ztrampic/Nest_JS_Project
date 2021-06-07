@@ -5,7 +5,8 @@ import {UpdateUserDto} from "./dto/update-user.dto";
 
 @Controller('user')
 export class UserController {
-    constructor(private readonly userService: UserService){}
+    constructor(private readonly userService: UserService) {
+    }
 
     @Get()
     @HttpCode(200)

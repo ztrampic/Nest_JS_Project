@@ -22,7 +22,7 @@ export class CreateUserDto {
     @IsEmail()
     email: string;
 
-    @ValidateNested({ each: true })
+    @ValidateNested({each: true})
     @Type(() => CreateRoleDto)
     roles: CreateRoleDto[];
 }

@@ -1,9 +1,9 @@
-import { Module } from '@nestjs/common';
+import {Module} from '@nestjs/common';
 import {UserModule} from "./user/user.module";
 import {RoleModule} from "./role/role.module";
-import { AuthModule } from './auth/auth.module';
+import {AuthModule} from './auth/auth.module';
 
-const modules : any = [
+const modules: any = [
     UserModule,
     RoleModule,
     AuthModule,
@@ -14,4 +14,5 @@ const modules : any = [
         ...modules,
     ],
 })
-export class CoreModule {}
+export class CoreModule {
+}

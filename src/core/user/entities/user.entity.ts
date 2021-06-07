@@ -22,7 +22,7 @@ export class User extends BaseEntity {
     lastname: number;
 
     @Column({type: 'varchar', nullable: false, unique: false})
-    @Exclude({ toPlainOnly: true })
+    @Exclude({toPlainOnly: true})
     password: string;
 
     @Column({type: 'varchar', nullable: false})
@@ -31,14 +31,14 @@ export class User extends BaseEntity {
     @Column({type: 'varchar', nullable: false, unique: true})
     email: string;
 
-    @Column({default: true, name:'is_active'})
+    @Column({default: true, name: 'is_active'})
     isActive: boolean;
 
     @ManyToMany(() => Role, {eager: true})
     @JoinTable({
         name: 'user_role',
-        joinColumn: { name: 'user_id', referencedColumnName: 'id'},
-        inverseJoinColumn: { name: 'role_id', referencedColumnName: 'id'},
+        joinColumn: {name: 'user_id', referencedColumnName: 'id'},
+        inverseJoinColumn: {name: 'role_id', referencedColumnName: 'id'},
     })
     roles: Role[];
 
