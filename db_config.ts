@@ -1,14 +1,13 @@
 
 import { User } from "./src/core/user/entities/user.entity";
 import { Role } from "./src/core/role/entities/role.entity";
-import {TypeOrmModuleAsyncOptions} from "@nestjs/typeorm";
 import {ConfigModule, ConfigService} from "@nestjs/config";
 
 const ENTITIES : any[] = [
     User,Role
 ]
 
-export default class TypeOrmConfig{
+export class TypeOrmConfig{
     static getOrmConfig(configService: ConfigService) :any {
         return {
             type: configService.get('DB_TYPE'),

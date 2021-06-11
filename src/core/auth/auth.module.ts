@@ -8,10 +8,10 @@ import {UserModule} from "../user/user.module";
 
 const modules: any = [
     UserModule,
-    PassportModule,
+    PassportModule.register({defaultStrategy: 'jwt'}),
     JwtModule.register({
         secret: `${process.env.SECRETKEY}`,
-        // signOptions: { expiresIn: `${process.env.EXPIRESIN}`},
+        signOptions: {expiresIn: '20s'},
     }),
 ]
 

@@ -1,4 +1,6 @@
 import * as bcrypt from 'bcrypt';
+import {SetMetadata} from '@nestjs/common';
+import {IS_PUBLIC_KEY} from "../../../../constants";
 
 export interface RegistrationStatus {
     success: boolean;
@@ -18,3 +20,5 @@ export interface LoginStatus {
 export const comparePasswords = async (userPassword, currentPassword) => {
     return await bcrypt.compare(currentPassword, userPassword);
 };
+
+export const OpenPublic = () => SetMetadata(IS_PUBLIC_KEY, true);

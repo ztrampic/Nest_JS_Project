@@ -1,7 +1,7 @@
 import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
 import {JwtService} from "@nestjs/jwt";
 import {UserService} from "../user/user.service";
-import {JwtPayload, LoginStatus, RegistrationStatus} from "./helpers/interface";
+import {JwtPayload, LoginStatus, RegistrationStatus} from "./helpers/auth.helper";
 import {LoginUserDto} from "../user/dto/login-user.dto";
 import {User} from "../user/entities/user.entity";
 import {EXCEPTION_MESSAGE, SUCCESS_MESSAGE} from "../../../constants";
@@ -36,7 +36,7 @@ export class AuthService {
         return {expiresIn, accessToken};
     }
 
-    async validateUser(payload: JwtPayload) {
+    async validateUser(payload) {
         const user = await this.usersService.findByPayload(payload);
         if (!user) {
             throw new HttpException(EXCEPTION_MESSAGE.WRONG_PASSWORD, HttpStatus.UNAUTHORIZED);
@@ -44,6 +44,14 @@ export class AuthService {
         return user;
     }
 
+    isTokenValid(token: string): boolean {
+        try {
+            this.jwtService.verify(token);
+            return true;
+        } catch (ex) {
+            throw new HttpException(EXCEPTION_MESSAGE.INVALID_TOKEN, HttpStatus.UNAUTHORIZED);
+        }
+    }
 }
 
 

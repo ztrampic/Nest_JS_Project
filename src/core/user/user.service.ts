@@ -9,7 +9,7 @@ import {EXCEPTION_MESSAGE, ROLES} from "../../../constants";
 import {Role} from "../role/entities/role.entity";
 import {CreateRoleDto} from "../role/dto/create-role.dto";
 import {LoginUserDto} from "./dto/login-user.dto";
-import {comparePasswords, JwtPayload} from "../auth/helpers/interface";
+import {comparePasswords, JwtPayload} from "../auth/helpers/auth.helper";
 
 
 @Injectable()
@@ -132,8 +132,8 @@ export class UserService {
         return array;
     }
 
-    async findByPayload(payload: JwtPayload) {
-        return await this.userRepository.findOne({email: payload.email});
+    async findByPayload(email) {
+        return await this.userRepository.findOne({email: email});
     }
 
 }
